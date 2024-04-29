@@ -16,6 +16,9 @@ Instalar dependencias:
 yarn
 ```
 
+
+
+
 Ejecutar en modo desarrollo:
 ```
 yarn dev
@@ -26,3 +29,5 @@ Construir build de producción:
 yarn build
 ```
 
+## Recursos
+[Spinners CSS](https://loading.io/css/)

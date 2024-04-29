@@ -6,6 +6,7 @@ import { formatModelResponse } from "../helpers/formatModelResponse";
 import Markdown from "react-markdown";
 import remarkGfm from 'remark-gfm';
 import './OllamaPage.css';
+import { Spinner } from "../components/Spinner";
 
 export const OllamaPage = () => {
 
@@ -36,11 +37,12 @@ export const OllamaPage = () => {
       model,
       prompt,
     }
-
+    setLoading(true);
+    setPrompt('');
     const response = await http.post(urlBase, body, config);
     const fullResponse = formatModelResponse(response);
-    setPrompt('')
     console.log(fullResponse)
+    setLoading(false);
     setResponseText(fullResponse);
   }
 
@@ -53,27 +55,36 @@ export const OllamaPage = () => {
         <hr />
         {/* <p>{responseText}</p> */}
         <div className="content p-2 rounded">
-          <Markdown remarkPlugins={[remarkGfm]}>
-            {(loading) ? 'Cargando...' : responseText}
-          </Markdown>
+          {(loading)
+            ? (
+              <div className="d-flex h-100 justify-content-center align-items-center">
+                <Spinner className="mx-auto" />
+              </div>
+            )
+            : (
+              <Markdown remarkPlugins={[remarkGfm]}>
+                {responseText}
+              </Markdown>
+            )
+          }
         </div>
         <div className="input-area">
-        <form className="d-flex align-items-center gap-2">
-          <input
-            type="text"
-            className="form-control shadow"
-            placeholder="Pregunta algo..."
-            value={prompt}
-            onChange={handleInputChange}
-          />
-          <button
-            type="submit"
-            className="btn btn-md shadow btn-primary"
-            onClick={preguntarAlModelo}
-          >
-            Send
-          </button>
-        </form>
+          <form className="d-flex align-items-center gap-2">
+            <input
+              type="text"
+              className="form-control shadow"
+              placeholder="Pregunta algo..."
+              value={prompt}
+              onChange={handleInputChange}
+            />
+            <button
+              type="submit"
+              className="btn btn-md shadow btn-primary"
+              onClick={preguntarAlModelo}
+            >
+              Send
+            </button>
+          </form>
         </div>
       </div>
     </>
