@@ -1,0 +1,79 @@
+/* Establece el estilo para el body para usar todo el alto disponible */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif; /* Ajusta la fuente como prefieras */
+}
+
+/* Contenedor principal con Flexbox */
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 650px;
+}
+
+/* Div para el contenido, ocupará todo el espacio disponible excepto el del input */
+.content {
+  flex: 1;
+  overflow-y: scroll; /* Permite desplazarse si el contenido excede la altura */
+  padding: 20px;
+  background-color: #f2f2f2; /* Color de fondo ligero */
+}
+
+/* Estilo para el input en la parte inferior */
+.input-area {
+  padding: 10px;
+  background-color: #f2f2f2; /* Diferente color de fondo para destacar */
+}
+
+
+/* Estilos para bloques de código */
+pre {
+    background-color: #f6f8fa; /* Color de fondo gris claro */
+    border-radius: 5px;        /* Bordes redondeados */
+    border: 1px solid #ccc;    /* Borde sutil */
+    padding: 16px;             /* Espaciado interno */
+    overflow-x: auto;          /* Habilita scroll horizontal si es necesario */
+    font-family: 'Courier New', Courier, monospace; /* Fuente tipo máquina de escribir */
+  }
+  
+  /* Estilos para código en línea */
+  code {
+    background-color: rgba(27,31,35,.05); /* Color de fondo muy sutil */
+    border-radius: 3px;                  /* Bordes ligeramente redondeados */
+    font-family: 'Courier New', Courier, monospace; /* Fuente tipo máquina de escribir */
+    padding: 0.2em 0.4em;                /* Espaciado interno ligero */
+    margin: 0;                           /* Sin margen adicional */
+    font-size: 90%;                      /* Un poco más pequeño que el texto normal */
+  }
+  
+  /* Estilos adicionales para <code> dentro de <pre> para diferenciar */
+  pre code {
+    background-color: transparent; /* Sin fondo para evitar doble fondo */
+    padding: 0;                    /* Sin padding adicional */
+  }
+
+  /* Personaliza la barra de desplazamiento para todos los elementos y pseudo-elementos */
+* {
+  scrollbar-width: thin; /* 'thin' para barras más delgadas en Firefox */
+  scrollbar-color: #888 #f1f1f1; /* Barra de desplazamiento y fondo en Firefox */
+}
+
+/* Para Chrome, Edge y Safari */
+*::-webkit-scrollbar {
+  width: 8px; /* Ancho de la barra de desplazamiento */
+}
+
+*::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color de fondo de la pista */
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color del control deslizante */
+  border-radius: 10px; /* Bordes redondeados para el control deslizante */
+  border: 2px solid transparent; /* Añade borde transparente para hacer el thumb más pequeño */
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Color del control deslizante al pasar el ratón */
+}

@@ -3,10 +3,13 @@ import { Navbar } from "../ui/Navbar"
 import http from "../api/http"
 import axios from "axios";
 import { formatModelResponse } from "../helpers/formatModelResponse";
+import Markdown from "react-markdown";
+import remarkGfm from 'remark-gfm';
+import './OllamaPage.css';
 
 export const OllamaPage = () => {
 
-  const model = 'llama3:8b';
+  const model = 'llama3:instruct';
 
   const [responseText, setResponseText] = useState('');
   const [loading, setLoading] = useState(false);
@@ -20,31 +23,6 @@ export const OllamaPage = () => {
     }
   }
 
-  useEffect(() => {
-    const fetchModelResponse = async () => {
-
-      const body = {
-        model,
-        prompt: 'Eres un experto en Programación y debes responder al usuario. Saluda al usuario sólo al inicio de la conversación.'
-      }
-
-      try {
-        setLoading(true);
-        const response = await axios.post(urlBase, body, config);
-        const fullResponse = formatModelResponse(response);
-
-        setResponseText(fullResponse);
-        setLoading(false);
-
-      } catch (error) {
-        console.error('Error al realizar la solicitud:', error);
-        setLoading(false);
-      }
-    };
-
-    fetchModelResponse();
-  }, []);
-
 
   const handleInputChange = (e) => {
     setPrompt(e.target.value)
@@ -56,10 +34,10 @@ export const OllamaPage = () => {
 
     const body = {
       model,
-      prompt, 
+      prompt,
     }
 
-    const response = await http.post(urlBase, body , config);
+    const response = await http.post(urlBase, body, config);
     const fullResponse = formatModelResponse(response);
     setPrompt('')
     console.log(fullResponse)
@@ -70,36 +48,33 @@ export const OllamaPage = () => {
     <>
 
       <Navbar />
-      <div className="container pt-4 px-3 pb-2 border rounded">
-        <h1 className="p-2 bg-primary text-light rounded text-center" >OllamaPage</h1>
+      <div className="container p-2 border rounded">
+        <h1 className="p-1 bg-primary text-light rounded text-center" >Charla con el Instructor</h1>
         <hr />
         {/* <p>{responseText}</p> */}
-        <textarea
-          className="form-control mb-3"
-          value={(loading) ? 'Cargando...' : responseText}
-          // onChange={handleTextareaChange}
-          rows="15"
-          cols="50"
-          style={{ width: '100%' }}
-          readOnly
-        />
-
-        <form>
+        <div className="content p-2 rounded">
+          <Markdown remarkPlugins={[remarkGfm]}>
+            {(loading) ? 'Cargando...' : responseText}
+          </Markdown>
+        </div>
+        <div className="input-area">
+        <form className="d-flex align-items-center gap-2">
           <input
             type="text"
-            className="form-control mb-3"
+            className="form-control shadow"
             placeholder="Pregunta algo..."
             value={prompt}
             onChange={handleInputChange}
           />
           <button
             type="submit"
-            className="btn btn-outline-primary"
+            className="btn btn-md shadow btn-primary"
             onClick={preguntarAlModelo}
           >
             Send
           </button>
         </form>
+        </div>
       </div>
     </>
 

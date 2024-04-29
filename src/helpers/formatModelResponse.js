@@ -1,7 +1,8 @@
 
 // Función para formatear respuesta del modelo
 export const formatModelResponse = (responseModel) => {
-    const fullResponse = responseModel.data.split('\n')
+    const fullResponse = responseModel.data
+        .split('\n')
         .filter(chunk => chunk)
         .map(chunk => {
             try {
@@ -15,3 +16,5 @@ export const formatModelResponse = (responseModel) => {
 
     return fullResponse;
 }
+
+

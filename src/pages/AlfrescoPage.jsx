@@ -16,6 +16,8 @@ export const AlfrescoPage = () => {
     // Input donde se coloca el id de un nodo para averiguar su información
     const [inputNodeInfo, setInputNodeInfo] = useState('')
 
+    const [serverError, setServerError] = useState('')
+
 
     const [toggleSite, setToggleSite] = useState(true);
     const [toggleChildrens, setToggleChildrens] = useState(true);
@@ -37,6 +39,16 @@ export const AlfrescoPage = () => {
             console.log(error)
         }
     }
+
+    (async () => {
+        try {
+            const response = await fetch(`${urlBase}/sites`);
+            if(response.ok) return true;
+        } catch (error) {
+            console.log(error)
+            setServerError("Servicio No disponible")
+        }
+    })();
 
 
     // Obtiene todos los nodos hijos (carpetas y archivos) del nodo con ID recibido
@@ -101,87 +113,99 @@ export const AlfrescoPage = () => {
                 <h1 className="mt-4">Alfresco Page</h1>
                 <hr />
 
-                {/* SECCION SITIOS */}
-                <section className="mb-3 border p-2 rounded">
-                    <h3>Obtener sitios</h3>
-                    <code hidden={toggleSite && true}>
-                        <pre>
-                            {
-                                JSON.stringify(sites, null, 3)
-                            }
-                        </pre>
-                    </code>
+                {
+                    (serverError)
+                        ? (
+                            <div className="alert h4 alert-danger p-2 text-center">
+                                {serverError}
+                            </div>
+                        )
+                        : (
+                            <>
+                                {/* SECCION SITIOS */}
+                                <section className="mb-3 border p-2 rounded">
+                                    <h3>Obtener sitios</h3>
+                                    <code hidden={toggleSite && true}>
+                                        <pre>
+                                            {
+                                                JSON.stringify(sites, null, 3)
+                                            }
+                                        </pre>
+                                    </code>
 
-                    <button
-                        onClick={obtenerSitios}
-                        className="btn btn-sm btn-primary"
-                    >send</button>
+                                    <button
+                                        onClick={obtenerSitios}
+                                        className="btn btn-sm btn-primary"
+                                    >send</button>
 
-                    <button
-                        className="btn btn-sm btn-outline-secondary ms-2"
-                        onClick={() => setToggleSite(!toggleSite)}
-                    >
-                        {(toggleSite ? 'Show' : 'Hide')}
-                    </button>
-                </section>
+                                    <button
+                                        className="btn btn-sm btn-outline-secondary ms-2"
+                                        onClick={() => setToggleSite(!toggleSite)}
+                                    >
+                                        {(toggleSite ? 'Show' : 'Hide')}
+                                    </button>
+                                </section>
 
-                {/*  SECCION NODOS HIJOS */}
-                <section className="mb-3 border p-2 rounded">
-                    <h3>Obtener Nodos Hijos</h3>
-                    <code hidden={toggleChildrens && true}>
-                        <pre>
-                            {
-                                JSON.stringify(nodes, null, 3)
-                            }
-                        </pre>
-                    </code>
-                    <input
-                        type="text"
-                        className="form-control mb-3"
-                        onChange={(e) => setInputNodeParent(e.target.value)}
-                        value={inputNodeParent}
-                    />
-                    <button
-                        onClick={() => obtenerNodosHijos(inputNodeParent)}
-                        className="btn btn-sm btn-primary"
-                    >send</button>
+                                {/*  SECCION NODOS HIJOS */}
+                                <section className="mb-3 border p-2 rounded">
+                                    <h3>Obtener Nodos Hijos</h3>
+                                    <code hidden={toggleChildrens && true}>
+                                        <pre>
+                                            {
+                                                JSON.stringify(nodes, null, 3)
+                                            }
+                                        </pre>
+                                    </code>
+                                    <input
+                                        type="text"
+                                        className="form-control mb-3"
+                                        onChange={(e) => setInputNodeParent(e.target.value)}
+                                        value={inputNodeParent}
+                                    />
+                                    <button
+                                        onClick={() => obtenerNodosHijos(inputNodeParent)}
+                                        className="btn btn-sm btn-primary"
+                                    >send</button>
 
-                    <button
-                        className="btn btn-sm btn-outline-secondary ms-2"
-                        onClick={() => setToggleChildrens(!toggleChildrens)}
-                    >
-                        {(toggleChildrens ? 'Show' : 'Hide')}
-                    </button>
-                </section>
+                                    <button
+                                        className="btn btn-sm btn-outline-secondary ms-2"
+                                        onClick={() => setToggleChildrens(!toggleChildrens)}
+                                    >
+                                        {(toggleChildrens ? 'Show' : 'Hide')}
+                                    </button>
+                                </section>
 
-                {/* SECCIÓN INFO DE UN NODO */}
-                <section className="mb-3 border p-2 rounded">
-                    <h3>Información de un Nodo</h3>
-                    <code hidden={toggleNodeInfo && true}>
-                        <pre>
-                            {
-                                JSON.stringify(nodeInfo, null, 3)
-                            }
-                        </pre>
-                    </code>
-                    <input
-                        type="text"
-                        className="form-control mb-3"
-                        onChange={(e) => setInputNodeInfo(e.target.value)}
-                        value={inputNodeInfo}
-                    />
-                    <button
-                        onClick={() => obtenerInfoNodo(inputNodeInfo)}
-                        className="btn btn-sm btn-primary"
-                    >send</button>
+                                {/* SECCIÓN INFO DE UN NODO */}
+                                <section className="mb-3 border p-2 rounded">
+                                    <h3>Información de un Nodo</h3>
+                                    <code hidden={toggleNodeInfo && true}>
+                                        <pre>
+                                            {
+                                                JSON.stringify(nodeInfo, null, 3)
+                                            }
+                                        </pre>
+                                    </code>
+                                    <input
+                                        type="text"
+                                        className="form-control mb-3"
+                                        onChange={(e) => setInputNodeInfo(e.target.value)}
+                                        value={inputNodeInfo}
+                                    />
+                                    <button
+                                        onClick={() => obtenerInfoNodo(inputNodeInfo)}
+                                        className="btn btn-sm btn-primary"
+                                    >send</button>
 
-                    <button
-                        className="btn btn-sm btn-outline-secondary ms-2"
-                        onClick={() => setToggleNodeInfo(!toggleNodeInfo)}
-                    >
-                        {(toggleNodeInfo ? 'Show' : 'Hide')}
-                    </button>
-                </section>
+                                    <button
+                                        className="btn btn-sm btn-outline-secondary ms-2"
+                                        onClick={() => setToggleNodeInfo(!toggleNodeInfo)}
+                                    >
+                                        {(toggleNodeInfo ? 'Show' : 'Hide')}
+                                    </button>
+                                </section>
+                            </>
+                        )
+                }
             </div>
         </>
     )
