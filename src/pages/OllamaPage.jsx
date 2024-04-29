@@ -1,16 +1,19 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
+
 import { Navbar } from "../ui/Navbar"
-import http from "../api/http"
-import axios from "axios";
-import { formatModelResponse } from "../helpers/formatModelResponse";
+import { Spinner } from "../components/Spinner";
+
 import Markdown from "react-markdown";
 import remarkGfm from 'remark-gfm';
+
+import { formatModelResponse } from "../helpers/formatModelResponse";
+import http from "../api/http"
+
 import './OllamaPage.css';
-import { Spinner } from "../components/Spinner";
 
 export const OllamaPage = () => {
 
-  const model = 'llama3:instruct';
+  const model = 'llama3:8b';
 
   const [responseText, setResponseText] = useState('');
   const [loading, setLoading] = useState(false);
@@ -37,11 +40,13 @@ export const OllamaPage = () => {
       model,
       prompt,
     }
+
     setLoading(true);
     setPrompt('');
+    
     const response = await http.post(urlBase, body, config);
     const fullResponse = formatModelResponse(response);
-    console.log(fullResponse)
+    
     setLoading(false);
     setResponseText(fullResponse);
   }
@@ -53,7 +58,6 @@ export const OllamaPage = () => {
       <div className="container p-2 border rounded">
         <h1 className="p-1 bg-primary text-light rounded text-center" >Charla con el Instructor</h1>
         <hr />
-        {/* <p>{responseText}</p> */}
         <div className="content p-2 rounded">
           {(loading)
             ? (
